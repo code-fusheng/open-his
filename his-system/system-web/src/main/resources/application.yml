@@ -1,0 +1,4 @@
+# yml文件激活配置
+spring:
+  profiles:
+    active: dev
