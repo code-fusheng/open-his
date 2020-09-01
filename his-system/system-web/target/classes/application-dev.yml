@@ -40,11 +40,13 @@ spring:
 
 #shiro配置
 shiro:
+  # 配置不拦截路径
   anon-urls:
     - /login/doLogin*
     - /login/captcha*
     - /login/logout*
     - /druid/**
+  # 配置拦截路径
   authc-urls:
     - /**
 #mybatisplus的配置
