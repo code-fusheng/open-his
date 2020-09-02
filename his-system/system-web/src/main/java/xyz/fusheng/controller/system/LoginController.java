@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,12 +46,13 @@ public class LoginController {
 
     /**
      * 登录方法
+     * @Validated 注解用于配合 his-common 中 LoginBodyDto 对象属性上的注解
      * @param loginBodyDto
      * @param request
      * @return
      */
     @PostMapping("login/doLogin")
-    public AjaxResult login(@RequestBody LoginBodyDto loginBodyDto, HttpServletRequest request) {
+    public AjaxResult login(@RequestBody @Validated LoginBodyDto loginBodyDto, HttpServletRequest request) {
         AjaxResult ajax = AjaxResult.success();
         String username = loginBodyDto.getUsername();
         String password = loginBodyDto.getPassword();
