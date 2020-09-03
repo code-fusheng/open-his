@@ -2,9 +2,13 @@ package xyz.fusheng.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,8 +17,10 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import xyz.fusheng.constants.Constants;
+import xyz.fusheng.domain.DictData;
 import xyz.fusheng.domain.DictType;
 import xyz.fusheng.dto.DictTypeDto;
+import xyz.fusheng.mapper.DictDataMapper;
 import xyz.fusheng.mapper.DictTypeMapper;
 import xyz.fusheng.service.DictTypeService;
 import xyz.fusheng.vo.DataGridView;
@@ -28,6 +34,12 @@ public class DictTypeServiceImpl implements DictTypeService {
 
     @Resource
     private DictTypeMapper dictTypeMapper;
+
+    @Resource
+    private DictDataMapper dictDataMapper;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public DataGridView listPage(DictTypeDto dictTypeDto) {
@@ -99,13 +111,35 @@ public class DictTypeServiceImpl implements DictTypeService {
         return -1;
     }
 
+
     @Override
     public DictType selectDictTypeById(Long dictId) {
         return this.dictTypeMapper.selectById(dictId);
     }
 
+    /**
+     * 同步缓存的操作流程
+     * 1，查询出所有可用的字典类型数据
+     * 2，再根据字典的类型查询字典数据
+     * 3，把字典数据生成json存到redis
+     * 设计 key  dict : dictType  如 dict:sys_user_sex --->[{},{},{}]
+     */
     @Override
     public void dictCacheAsync() {
-
+        // 查询出所有可用的字典类型数据
+        QueryWrapper<DictType> qw = new QueryWrapper<>();
+        qw.eq(DictType.COL_STATUS, Constants.STATUS_TRUE);
+        List<DictType> dictTypes = this.dictTypeMapper.selectList(qw);
+        for (DictType dictType : dictTypes) {
+            QueryWrapper<DictData> qdw = new QueryWrapper<>();
+            qdw.eq(DictData.COL_STATUS, Constants.STATUS_TRUE);
+            qdw.eq(DictData.COL_DICT_TYPE, dictType.getDictType());
+            qdw.orderByAsc(DictData.COL_DICT_SORT);
+            List<DictData> dictDataList = dictDataMapper.selectList(qdw);
+            // 转成 json 串
+            String json= JSON.toJSONString(dictDataList);
+            ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
+            opsForValue.set(Constants.DICT_REDIS_PROFIX + dictType.getDictType(), json);
+        }
     }
 }

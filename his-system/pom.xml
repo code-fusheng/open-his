@@ -25,6 +25,13 @@
             <artifactId>his-commons</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!--redis的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
     </dependencies>
 
 
