@@ -72,13 +72,14 @@ public interface Constants {
     String IS_FINAL_TRUE = "1";
     /**
      * 挂号单状态
+     * 待支付 待就诊 就诊中 就诊完成 已退号 已作废
      */
-    String REG_STATUS_0 = "0"; //待支付
-    String REG_STATUS_1 = "1"; //待就诊
-    String REG_STATUS_2 = "2"; //就诊中
-    String REG_STATUS_3 = "3"; //就诊完成
-    String REG_STATUS_4 = "4"; //已退号
-    String REG_STATUS_5 = "5"; //已作废
+    String REG_STATUS_0 = "0";
+    String REG_STATUS_1 = "1";
+    String REG_STATUS_2 = "2";
+    String REG_STATUS_3 = "3";
+    String REG_STATUS_4 = "4";
+    String REG_STATUS_5 = "5";
     /**
      * 处方类型
      */
@@ -112,9 +113,10 @@ public interface Constants {
     String ORDER_BACKFEE_STATUS_2 = "2";
     /**
      * 支付类型
+     * 现金 支付宝
      */
-    String PAY_TYPE_0 = "0";    //现金
-    String PAY_TYPE_1 = "1";    //支付宝
+    String PAY_TYPE_0 = "0";
+    String PAY_TYPE_1 = "1";
 
     /**
      * redis的字典前缀
