@@ -3,10 +3,11 @@ package xyz.fusheng.controller.system; /**
  * @Date: 2020/9/3 13:18
  */
 
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import xyz.fusheng.aspectj.annotation.Log;
+import xyz.fusheng.aspectj.enums.BusinessType;
 import xyz.fusheng.dto.DictTypeDto;
 import xyz.fusheng.service.DictTypeService;
 import xyz.fusheng.utils.ShiroSecurityUtils;
@@ -49,6 +50,7 @@ public class DictTypeController {
      * @return
      */
     @PostMapping("addDictType")
+    @Log(title = "添加字典类型",businessType = BusinessType.INSERT)
     public AjaxResult addDictType(@Validated DictTypeDto dictTypeDto) {
         // 先检查字典是否已经存在
         if (dictTypeService.checkDictTypeUnique(dictTypeDto.getDictId(), dictTypeDto.getDictType())) {
@@ -64,6 +66,7 @@ public class DictTypeController {
      * @return
      */
     @PutMapping("updateDictType")
+    @Log(title = "修改字典类型",businessType = BusinessType.UPDATE)
     public AjaxResult updateDictType(@Validated DictTypeDto dictTypeDto) {
         if (dictTypeService.checkDictTypeUnique(dictTypeDto.getDictId(), dictTypeDto.getDictType())) {
             return AjaxResult.fail("修改字典【" + dictTypeDto.getDictName() + "】失败，字典类型已存在");
@@ -88,6 +91,7 @@ public class DictTypeController {
      * @return
      */
     @DeleteMapping("deleteDictTypeByIds/{dictIds}")
+    @Log(title = "删除字典类型",businessType = BusinessType.DELETE)
     public AjaxResult updateDictType(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] dictIds) {
         return AjaxResult.toAjax(this.dictTypeService.deleteDictTypeByIds(dictIds));
     }
@@ -106,6 +110,7 @@ public class DictTypeController {
      * @return
      */
     @GetMapping("dictCacheAsync")
+    @Log(title = "同步字典数据到redis",businessType = BusinessType.OTHER)
     public AjaxResult dictCacheAsync(){
         try {
             this.dictTypeService.dictCacheAsync();

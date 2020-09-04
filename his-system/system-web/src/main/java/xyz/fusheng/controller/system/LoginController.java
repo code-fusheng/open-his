@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.fusheng.aspectj.annotation.Log;
+import xyz.fusheng.aspectj.enums.BusinessType;
 import xyz.fusheng.constants.Constants;
 import xyz.fusheng.constants.HttpStatus;
 import xyz.fusheng.domain.Menu;
@@ -52,6 +54,7 @@ public class LoginController {
      * @return
      */
     @PostMapping("login/doLogin")
+    // @Log(title = "用户登录", businessType = BusinessType.OTHER)
     public AjaxResult login(@RequestBody @Validated LoginBodyDto loginBodyDto, HttpServletRequest request) {
         AjaxResult ajax = AjaxResult.success();
         String username = loginBodyDto.getUsername();
@@ -93,6 +96,7 @@ public class LoginController {
      * @return
      */
     @PostMapping("login/logout")
+    // @Log(title = "用户退出",businessType = BusinessType.OTHER)
     public AjaxResult logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();

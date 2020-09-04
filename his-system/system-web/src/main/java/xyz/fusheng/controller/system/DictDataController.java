@@ -3,9 +3,10 @@ package xyz.fusheng.controller.system; /**
  * @Date: 2020/9/3 19:02
  */
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import xyz.fusheng.aspectj.annotation.Log;
+import xyz.fusheng.aspectj.enums.BusinessType;
 import xyz.fusheng.dto.DictDataDto;
 import xyz.fusheng.service.DictDataService;
 import xyz.fusheng.utils.ShiroSecurityUtils;
@@ -48,6 +49,7 @@ public class DictDataController {
      * @return
      */
     @PostMapping("addDictData")
+    @Log(title = "添加字典数据",businessType = BusinessType.INSERT)
     public AjaxResult addDictData(@Validated DictDataDto dictDataDto) {
         dictDataDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.dictDataService.insert(dictDataDto));
@@ -59,6 +61,7 @@ public class DictDataController {
      * @return
      */
     @PutMapping("updateDictData")
+    @Log(title = "修改字典数据",businessType = BusinessType.UPDATE)
     public AjaxResult updateDictData(@Validated DictDataDto dictDataDto) {
         dictDataDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.dictDataService.update(dictDataDto));
@@ -80,6 +83,7 @@ public class DictDataController {
      * @return
      */
     @DeleteMapping("deleteDictDataByIds/{dictIds}")
+    @Log(title = "删除字典数据",businessType = BusinessType.DELETE)
     public AjaxResult updateDictData(@PathVariable @Validated @NotEmpty(message = "要删除的数据ID不能为空") Long[] dictIds) {
         return AjaxResult.toAjax(this.dictDataService.deleteDictDataByIds(dictIds));
     }
