@@ -3,6 +3,7 @@ package xyz.fusheng.service;
 import xyz.fusheng.domain.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 import xyz.fusheng.domain.SimpleUser;
+import xyz.fusheng.dto.MenuDto;
 
 import java.util.List;
 
@@ -20,5 +21,47 @@ public interface MenuService{
      * @return
      */
     public List<Menu> selectMenuTree(boolean isAdmin, SimpleUser simpleUser);
+
+    /**
+     * 查询菜单数据
+     * @param menuDto
+     * @return
+     */
+    List<Menu> listAllMenus(MenuDto menuDto);
+
+    /**
+     * 添加菜单
+     * @param menuDto
+     * @return
+     */
+    int addMenu(MenuDto menuDto);
+
+    /**
+     * 修改菜单
+     * @param menuDto
+     * @return
+     */
+    int updateMenu(MenuDto menuDto);
+
+    /**
+     * 根据菜单ID查询一个
+     * @param menuId
+     * @return
+     */
+    Menu getOne(Long menuId);
+
+    /**
+     * 根据菜单ID判断有没有子节点
+     * @param menuId
+     * @return  true 说明有  false没有
+     */
+    boolean hasChildByMenuId(Long menuId);
+
+    /**
+     * 根据菜单ID删除菜单
+     * @param menuId
+     * @return
+     */
+    int deleteMenuById(Long menuId);
 
 }
