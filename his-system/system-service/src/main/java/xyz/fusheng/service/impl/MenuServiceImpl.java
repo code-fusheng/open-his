@@ -86,4 +86,9 @@ public class MenuServiceImpl implements MenuService{
         // this.roleMapper.deleteRoleMenuByMenuIds(Arrays.asList(menuId));
         return this.menuMapper.deleteById(menuId);
     }
+
+    @Override
+    public List<Long> getMenusIdsByRoleId(Long roleId) {
+        return this.menuMapper.queryMenuIdsByRoleId(roleId);
+    }
 }
