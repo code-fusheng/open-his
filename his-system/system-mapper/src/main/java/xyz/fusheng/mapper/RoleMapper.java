@@ -34,4 +34,17 @@ public interface RoleMapper extends BaseMapper<Role> {
      */
     void saveRoleMenu(@Param("roleId") Long roleId, @Param("menuId") Long menuId);
 
+
+    /**
+     * 根据用户IDS删除sys_role_user里面的数据
+     *
+     * @param ids
+     */
+    void deleteRoleUserByUserIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 根据菜单权限ID删除sys_role_menu
+     * @param ids
+     */
+    void deleteRoleMenuByMenuIds(@Param("ids") List<Long> ids);
 }

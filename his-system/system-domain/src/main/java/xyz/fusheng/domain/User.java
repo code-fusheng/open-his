@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sys_user")
+@JsonIgnoreProperties(value = {"salt","password","unionId","openId"})
 public class User extends BaseEntity {
     /**
      * 用户ID
@@ -115,8 +117,7 @@ public class User extends BaseEntity {
     private String introduction;
 
     /**
-     *
-医生级别sys_dict_type:sys_user_level
+     * 医生级别sys_dict_type:sys_user_level
      */
     @TableField(value = "user_rank")
     @ApiModelProperty(value=",医生级别sys_dict_type:sys_user_level")

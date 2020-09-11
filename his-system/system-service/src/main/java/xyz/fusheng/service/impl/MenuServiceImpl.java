@@ -15,6 +15,7 @@ import xyz.fusheng.domain.Menu;
 import xyz.fusheng.domain.SimpleUser;
 import xyz.fusheng.dto.MenuDto;
 import xyz.fusheng.mapper.MenuMapper;
+import xyz.fusheng.mapper.RoleMapper;
 import xyz.fusheng.service.MenuService;
 
 /**
@@ -25,6 +26,9 @@ public class MenuServiceImpl implements MenuService{
 
     @Resource
     private MenuMapper menuMapper;
+
+    @Resource
+    private RoleMapper roleMapper;
 
     @Override
     public List<Menu> selectMenuTree(boolean isAdmin, SimpleUser simpleUser) {
@@ -83,7 +87,7 @@ public class MenuServiceImpl implements MenuService{
     @Override
     public int deleteMenuById(Long menuId) {
         //删除sys_role_menu中间表的数据[后面完成]
-        // this.roleMapper.deleteRoleMenuByMenuIds(Arrays.asList(menuId));
+        this.roleMapper.deleteRoleMenuByMenuIds(Arrays.asList(menuId));
         return this.menuMapper.deleteById(menuId);
     }
 
